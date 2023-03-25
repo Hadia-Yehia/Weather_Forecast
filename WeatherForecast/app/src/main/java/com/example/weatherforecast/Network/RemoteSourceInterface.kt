@@ -1,8 +1,8 @@
 package com.example.weatherforecast.Network
 
-import com.example.weatherforecast.Model.WeatherData
+import com.example.weatherforecast.Model.Welcome
 import retrofit2.Response
 
 interface RemoteSourceInterface {
-    suspend fun getAllWeatherData():Response<WeatherData>
+    suspend fun getAllWeatherData():Response<Welcome>
 }
