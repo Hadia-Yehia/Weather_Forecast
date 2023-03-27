@@ -48,10 +48,7 @@ class MyActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        var remoteSource: RemoteSource = RemoteSource()
-        MainScope().launch(Dispatchers.IO){
-            remoteSource.getAllWeatherData()
-        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

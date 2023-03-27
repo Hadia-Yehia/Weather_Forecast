@@ -14,9 +14,9 @@ class HomeViewModel(private val repo:RepositoryInterface) : ViewModel() {
     var apiData: MutableLiveData<Welcome> = MutableLiveData<Welcome>()
 
 
-    fun getDataFromApi() {
+    fun getDataFromApi(lat:String,lon:String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response=repo.getAllWeatherData()
+            val response=repo.getAllWeatherData(lat,lon)
             if(response.isSuccessful){
                 withContext(Dispatchers.Main){
                     apiData.value=response.body()
