@@ -3,5 +3,5 @@ package com.example.weatherforecast.Model
 import retrofit2.Response
 
 interface RepositoryInterface {
-    suspend fun getAllWeatherData():Response<Welcome>
+    suspend fun getAllWeatherData(lat:String,lon:String):Response<Welcome>
 }

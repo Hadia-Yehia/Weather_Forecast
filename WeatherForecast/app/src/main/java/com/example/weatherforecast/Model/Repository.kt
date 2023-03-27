@@ -20,7 +20,7 @@ class Repository private constructor(var remoteSourceInterface: RemoteSourceInte
             }
         }
     }
-    override suspend fun getAllWeatherData(): Response<Welcome> {
-        return remoteSourceInterface.getAllWeatherData()
+    override suspend fun getAllWeatherData(lat:String,lon:String): Response<Welcome> {
+        return remoteSourceInterface.getAllWeatherData(lat,lon)
     }
 }
