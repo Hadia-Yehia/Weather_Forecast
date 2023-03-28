@@ -1,11 +1,14 @@
 package com.example.weatherforecast.Model
 
+import androidx.room.Entity
+
 // To parse the JSON, install Klaxon and do:
 //
 //   val welcome = Welcome.fromJson(jsonString)
 
 
 
+@Entity(tableName = "fav_table", primaryKeys = ["lat","lon","flag"])
 data class Welcome (
     val lat: Double,
     val lon: Double,
@@ -13,7 +16,8 @@ data class Welcome (
     val timezoneOffset: Long,
     val current: Current,
     val hourly: List<Current>,
-    val daily: List<Daily>
+    val daily: List<Daily>,
+    var flag: Boolean
 )
 
 data class Current (

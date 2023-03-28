@@ -1,19 +1,19 @@
-package com.example.weatherforecast.ui.home
+package com.example.weatherforecast
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.weatherforecast.Model.RepositoryInterface
 import com.example.weatherforecast.Model.Welcome
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeViewModel(private val repo:RepositoryInterface) : ViewModel() {
+class MyViewModel(private val repo:RepositoryInterface) : ViewModel() {
     var apiData: MutableLiveData<Welcome> = MutableLiveData<Welcome>()
+    var apiObj: LiveData<Welcome> = apiData
     var favData:MutableLiveData<List<Welcome>> = MutableLiveData()
-
+    var favObj:LiveData<List<Welcome>> =favData
+    var current:MutableLiveData<Welcome> = MutableLiveData()
+    var currentObj:LiveData<Welcome> =current
 
     fun getDataFromApi(lat:String,lon:String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -43,11 +43,14 @@ class HomeViewModel(private val repo:RepositoryInterface) : ViewModel() {
             getDataFromRoom()
         }
     }
+    fun getFromFav(welcome: Welcome){
+        current.postValue(welcome)
+    }
 }
-class HomeViewModelFactory(private val repo:RepositoryInterface): ViewModelProvider.Factory{
+class MyViewModelFactory(private val repo:RepositoryInterface): ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if(modelClass.isAssignableFrom(HomeViewModel::class.java)){
-            HomeViewModel(repo) as T
+        return if(modelClass.isAssignableFrom(MyViewModel::class.java)){
+            MyViewModel(repo) as T
         }else{
             throw java.lang.IllegalArgumentException("ViewModel Class Not Found")
         }
