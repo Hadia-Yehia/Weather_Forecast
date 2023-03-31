@@ -81,6 +81,11 @@ class InitialFragment : Fragment() {
                     findNavController().navigate(action)
 
                 }
+                else if(selectedFruits.equals("Map")){
+                    val action=InitialFragmentDirections.actionInitialFragmentToMapsFragment()
+                    findNavController().navigate(action)
+                }
+
                 Toast.makeText(requireActivity(), "$selectedFruits Selected", Toast.LENGTH_SHORT)
                     .show()
             }
