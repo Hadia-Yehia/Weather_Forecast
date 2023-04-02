@@ -9,22 +9,42 @@
         android:id="@+id/nav_home"
         android:name="com.example.weatherforecast.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <argument
+            android:name="map"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="lat"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="lon"
+            app:argType="string"
+            android:defaultValue="0" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_favourite"
         android:name="com.example.weatherforecast.ui.favourite.FavouriteFragment"
         android:label="@string/menu_favourite"
-        tools:layout="@layout/fragment_favourite" />
+        tools:layout="@layout/fragment_favourite" >
+        <action
+            android:id="@+id/action_nav_favourite_to_favouriteDetailsFragment"
+            app:destination="@id/favouriteDetailsFragment" />
+        <action
+            android:id="@+id/action_nav_favourite_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.weatherforecast.ui.slideshow.SlideshowFragment"
+        android:name="com.example.weatherforecast.ui.alert.AlertFragment"
         android:label="@string/menu_alert"
         tools:layout="@layout/fragment_slideshow" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.weatherforecast.SettingsFragment"
+        android:name="com.example.weatherforecast.ui.settings.SettingsFragment"
         android:label="settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
@@ -43,5 +63,21 @@
         android:id="@+id/mapsFragment"
         android:name="com.example.weatherforecast.MapsFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_mapsFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+        <argument
+            android:name="fav"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_mapsFragment_to_nav_favourite"
+            app:destination="@id/nav_favourite" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouriteDetailsFragment"
+        android:name="com.example.weatherforecast.ui.favourite.FavouriteDetailsFragment"
+        android:label="fragment_favourite_details"
+        tools:layout="@layout/fragment_favourite_details" />
 </navigation>
