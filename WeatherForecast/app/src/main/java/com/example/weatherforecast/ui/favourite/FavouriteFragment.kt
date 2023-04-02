@@ -1,13 +1,18 @@
 package com.example.weatherforecast.ui.favourite
 
+import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherforecast.DataBase.LocalSource
+import com.example.weatherforecast.InitialFragmentDirections
 import com.example.weatherforecast.Model.Repository
 import com.example.weatherforecast.MyViewModel
 import com.example.weatherforecast.MyViewModelFactory
@@ -45,13 +50,28 @@ class FavouriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        favouriteAdapter= FavouriteAdapter{favViewModel.getFromFav(it)}
+        binding.fabBtn.setOnClickListener {
+            val action1=FavouriteFragmentDirections.actionNavFavouriteToMapsFragment(true)
+            findNavController().navigate(action1)
+        }
+        favouriteAdapter= FavouriteAdapter{
+            if(isOnline()){
+                favViewModel.getFromApiForFav(it.lat.toString(),it.lon.toString())
+
+            }
+            else{
+                favViewModel.getFromFav(it)
+
+            }
+            val action= FavouriteFragmentDirections.actionNavFavouriteToFavouriteDetailsFragment()
+            findNavController().navigate(action)
+            }
        binding.favRv.apply {
            this.adapter=favouriteAdapter
            layoutManager=LinearLayoutManager(context)
        }
         favViewModel.getDataFromRoom()
-        favViewModel.favData.observe(viewLifecycleOwner){
+        favViewModel.favObj.observe(viewLifecycleOwner){
             favouriteAdapter.submitList(it)
         }
     }
@@ -60,4 +80,9 @@ class FavouriteFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+    private fun isOnline(): Boolean {
+        val cm = context?.getSystemService(AppCompatActivity.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        return if (activeNetwork != null) {true}else{false}}
 }
+

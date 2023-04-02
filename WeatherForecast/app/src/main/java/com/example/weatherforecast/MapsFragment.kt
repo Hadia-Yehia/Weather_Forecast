@@ -5,14 +5,21 @@ import android.location.Geocoder
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.example.weatherforecast.DataBase.LocalSource
 import com.example.weatherforecast.InitialFragmentDirections
+import com.example.weatherforecast.Model.Repository
+import com.example.weatherforecast.Model.Welcome
+import com.example.weatherforecast.Network.RemoteSource
 import com.example.weatherforecast.databinding.FragmentMapsBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
@@ -22,16 +29,23 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 class MapsFragment : Fragment() {
+    lateinit var mapViewModel: MyViewModel
+    lateinit var mapViewModelFactory:MyViewModelFactory
     lateinit var binding: FragmentMapsBinding
     lateinit var fusedClient: FusedLocationProviderClient
     lateinit var mapFragment: SupportMapFragment
     lateinit var mMap: GoogleMap
-    lateinit var search_btn:Button
+    lateinit var lat:String
+    lateinit var lon:String
+    val args:MapsFragmentArgs by navArgs()
+
     private val callback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
         mMap.setOnMapClickListener {
             mMap.clear()
             mMap.addMarker(MarkerOptions().position(it))
+            lat=it.latitude.toString()
+            lon=it.longitude.toString()
             goToLatLng(it.latitude,it.longitude,16f)
         }
 
@@ -42,6 +56,13 @@ class MapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mapViewModelFactory= MyViewModelFactory(
+            Repository.getInstance(
+                RemoteSource.getINSTANCE(),
+                LocalSource(requireActivity())
+            ))
+        mapViewModel =
+            ViewModelProvider(requireActivity(),mapViewModelFactory).get(MyViewModel::class.java)
 
         binding = FragmentMapsBinding.inflate(inflater,container,false)
         mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -89,15 +110,32 @@ class MapsFragment : Fragment() {
         var list = Geocoder(requireContext()).getFromLocationName(searchLocation,1)
         if (list!= null && list.size>0){
             var address: Address = list.get(0)
+            lat=address.latitude.toString()
+            lon=address.longitude.toString()
             goToLatLng(address.latitude,address.longitude,16f)
         }
-
-
-
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+        binding.openBtn.setOnClickListener {
+            if (args.fav){
+                mapViewModel.getDataFromApi(lat,lon)
+                mapViewModel.apiData.observe(viewLifecycleOwner){
+                    Log.i("tag","map"+lat+lon+it.timezone)
+                    it.flag=true
+                    mapViewModel.insertPlaceInRoom(it)
+                    val action =MapsFragmentDirections.actionMapsFragmentToNavFavourite()
+                    findNavController().navigate(action)
+                }
+            }
+            else{
+                val action=MapsFragmentDirections.actionMapsFragmentToNavHome(true,lat,lon)
+                findNavController().navigate(action)
+            }
+        }
+
+        }
     }
-}

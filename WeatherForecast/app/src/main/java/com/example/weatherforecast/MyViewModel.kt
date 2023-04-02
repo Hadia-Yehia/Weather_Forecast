@@ -10,10 +10,13 @@ import kotlinx.coroutines.withContext
 class MyViewModel(private val repo:RepositoryInterface) : ViewModel() {
     var apiData: MutableLiveData<Welcome> = MutableLiveData<Welcome>()
     var apiObj: LiveData<Welcome> = apiData
+    var apiDataForFav: MutableLiveData<Welcome> = MutableLiveData<Welcome>()
+    var apiObjForFav: LiveData<Welcome> = apiDataForFav
     var favData:MutableLiveData<List<Welcome>> = MutableLiveData()
     var favObj:LiveData<List<Welcome>> =favData
     var current:MutableLiveData<Welcome> = MutableLiveData()
     var currentObj:LiveData<Welcome> =current
+
 
     fun getDataFromApi(lat:String,lon:String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -25,6 +28,7 @@ class MyViewModel(private val repo:RepositoryInterface) : ViewModel() {
             }
         }
     }
+
     fun getDataFromRoom(){
         viewModelScope.launch(Dispatchers.IO){
             repo.getAllStored().collect(){
@@ -32,6 +36,18 @@ class MyViewModel(private val repo:RepositoryInterface) : ViewModel() {
             }
         }
     }
+    fun getFromApiForFav(lat:String,lon:String){
+        viewModelScope.launch(Dispatchers.IO) {
+            val response=repo.getAllWeatherData(lat,lon)
+            if(response.isSuccessful){
+                withContext(Dispatchers.Main){
+                    apiDataForFav.value=response.body()
+                }
+            }
+        }
+
+    }
+
     fun insertPlaceInRoom(welcome: Welcome){
         viewModelScope.launch  (Dispatchers.IO){
             repo.insert(welcome)

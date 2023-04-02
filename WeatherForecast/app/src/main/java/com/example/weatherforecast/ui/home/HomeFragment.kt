@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.weatherforecast.DataBase.LocalSource
@@ -43,6 +44,7 @@ class HomeFragment : Fragment() {
     lateinit var lat:String
     lateinit var lon:String
     lateinit var welcome: Welcome
+    val args:HomeFragmentArgs by navArgs()
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -164,17 +166,19 @@ class HomeFragment : Fragment() {
     }
     override fun onResume() {
         super.onResume()
-        mFusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(requireActivity())
-        getLastLocation()
-        Log.i("tag","new location ahoh")
+        if(args.map){
+            Log.i("tag","hi"+args.lat+" "+args.lon)
+            homeViewModel.getDataFromApi(args.lat,args.lon)
+        }
+        else{mFusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(requireActivity())
+            getLastLocation()}
+
+
     }
     override fun onDestroyView() {
                 super.onDestroyView()
                 _binding = null
             }
-
-
-
         }
 
 

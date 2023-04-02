@@ -21,6 +21,7 @@ class RemoteSource:RemoteSourceInterface {
     }
     override suspend fun getAllWeatherData(lat:String,lon:String): Response<Welcome> {
      val response=api.getWeatherData(lat,lon)
+
         Log.i("TAG", "getAllWeatherData: "+ (response.body()?.current?.weather?.get(0)?.icon
             ?: "no data"))
      return response
