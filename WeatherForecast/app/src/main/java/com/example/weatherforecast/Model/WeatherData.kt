@@ -8,7 +8,7 @@ import androidx.room.Entity
 
 
 
-@Entity(tableName = "fav_table", primaryKeys = ["lat","lon","flag"])
+@Entity(tableName = "fav_table", primaryKeys = ["lat","lon"])
 data class Welcome (
     val lat: Double,
     val lon: Double,
@@ -17,8 +17,15 @@ data class Welcome (
     val current: Current,
     val hourly: List<Current>,
     val daily: List<Daily>,
-    var flag: Boolean
+    val alerts: List<Alert>?=null,
 )
+
+class Alert(var event:String,
+            var start: Long,
+            var end:Long,
+            var lat:Double,
+            var lon:Double,
+            var description: String)
 
 data class Current (
     val dt: Long,

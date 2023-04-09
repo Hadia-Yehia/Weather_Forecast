@@ -35,8 +35,8 @@ class MapsFragment : Fragment() {
     lateinit var fusedClient: FusedLocationProviderClient
     lateinit var mapFragment: SupportMapFragment
     lateinit var mMap: GoogleMap
-    lateinit var lat:String
-    lateinit var lon:String
+    var lat:String="0"
+    var lon:String="0"
     val args:MapsFragmentArgs by navArgs()
 
     private val callback = OnMapReadyCallback { googleMap ->
@@ -120,22 +120,47 @@ class MapsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+        mapInitialize()
         binding.openBtn.setOnClickListener {
+
             if (args.fav){
-                mapViewModel.getDataFromApi(lat,lon)
-                mapViewModel.apiData.observe(viewLifecycleOwner){
-                    Log.i("tag","map"+lat+lon+it.timezone)
-                    it.flag=true
-                    mapViewModel.insertPlaceInRoom(it)
-                    val action =MapsFragmentDirections.actionMapsFragmentToNavFavourite()
+                if(lat!=null&&lon!=null&&!lat.equals("0")&&!lon.equals("0")) {
+//                    mapViewModel.getDataFromApi(lat, lon)
+//                    //  mapViewModel.getDataFromApi("37.0902","-95.7129")
+//                    mapViewModel.apiData.observe(viewLifecycleOwner) {
+//                        Log.i("tag", "map" + lat + lon + it.timezone)
+//                        it.flag = true
+//                        mapViewModel.insertPlaceInRoom(it)
+                        val action = MapsFragmentDirections.actionMapsFragmentToNavFavourite(lat,lon)
+                        findNavController().navigate(action)
+                  //  }
+                }
+                else{
+                    val action = MapsFragmentDirections.actionMapsFragmentToNavFavourite()
                     findNavController().navigate(action)
                 }
             }
-            else{
-                val action=MapsFragmentDirections.actionMapsFragmentToNavHome(true,lat,lon)
-                findNavController().navigate(action)
+
+
+            else {
+                if (lat != null && lon != null) {
+                    val action = MapsFragmentDirections.actionMapsFragmentToNavHome(true, lat, lon)
+                    findNavController().navigate(action)
+
+                }
+                else{
+                    val action = MapsFragmentDirections.actionMapsFragmentToNavHome()
+                    findNavController().navigate(action)
+
+                }
             }
         }
 
         }
+
+    override fun onResume() {
+        super.onResume()
+        mapInitialize()
+
+    }
     }

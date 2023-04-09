@@ -35,13 +35,21 @@
         <action
             android:id="@+id/action_nav_favourite_to_mapsFragment"
             app:destination="@id/mapsFragment" />
+        <argument
+            android:name="lat"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="lon"
+            app:argType="string"
+            android:defaultValue="0" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_alert"
         android:name="com.example.weatherforecast.ui.alert.AlertFragment"
         android:label="@string/menu_alert"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_alert" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.weatherforecast.ui.settings.SettingsFragment"
@@ -80,4 +88,13 @@
         android:name="com.example.weatherforecast.ui.favourite.FavouriteDetailsFragment"
         android:label="fragment_favourite_details"
         tools:layout="@layout/fragment_favourite_details" />
+    <dialog
+        android:id="@+id/alertDialogFragment"
+        android:name="com.example.weatherforecast.ui.alert.AlertDialogFragment"
+        android:label="fragment_alert_dialog"
+        tools:layout="@layout/fragment_alert_dialog" >
+        <action
+            android:id="@+id/action_alertDialogFragment_to_nav_alert"
+            app:destination="@id/nav_alert" />
+    </dialog>
 </navigation>

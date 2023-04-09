@@ -9,9 +9,12 @@ interface FavDao {
     @Query("SELECT * FROM fav_table")
     fun getAllFavourites(): Flow<List<Welcome>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavourite(welcome: Welcome)
 
     @Delete
     suspend fun deleteFavourite(welcome: Welcome):Int
+
+
+
 }
