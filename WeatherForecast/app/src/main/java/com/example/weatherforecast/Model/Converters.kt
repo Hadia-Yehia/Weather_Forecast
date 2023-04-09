@@ -63,4 +63,33 @@ class Converters {
             TypeToken<List<Daily?>?>() {}.type
         return gson.fromJson<List<Daily>>(dailyString, type)
     }
+    @TypeConverter
+    fun fromAlertToString(alert: Alert): String{
+        return Gson().toJson(alert)
+    }
+    @TypeConverter
+    fun fromStringToAlert(alertString: String): Alert {
+        return Gson().fromJson(alertString, Alert::class.java)
+    }
+    @TypeConverter
+    fun fromAlertListToString(alertList:List<Alert?>?): String? {
+        if (alertList == null) {
+            return null
+        }
+        val gson = Gson()
+        val type= object :
+            TypeToken<List<Alert?>?>() {}.type
+        return gson.toJson(alertList, type)
+    }
+
+    @TypeConverter
+    fun fromStringToAlertList(alertString: String?): List<Alert>? {
+        if (alertString == null) {
+            return null
+        }
+        val gson = Gson()
+        val type = object :
+            TypeToken<List<Alert?>?>() {}.type
+        return gson.fromJson<List<Alert>>(alertString, type)
+    }
 }

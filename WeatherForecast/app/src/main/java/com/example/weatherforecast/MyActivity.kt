@@ -1,7 +1,12 @@
 package com.example.weatherforecast
 
+import android.content.Context
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Menu
+import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -16,16 +21,55 @@ import com.example.weatherforecast.databinding.ActivityMyBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MyActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMyBinding
+    var layoutDirection:Int?= null
+    companion object{
+        var isNotOpen=true;
+    }
+    override fun attachBaseContext(newBase: Context?) {
+        if (newBase != null && isNotOpen) {
+            MySharedPreference.getInstance(newBase)
+            setLocal(MySharedPreference.getLanguage(), newBase)
+            isNotOpen=false
+        }
+        super.attachBaseContext(newBase)
+    }
+
+    private fun setLocal(language: String, newBase: Context) {
+
+            val local = Locale(language)
+            Locale.setDefault(local)
+            val config = Configuration()
+            config.setLocale(local)
+            newBase.resources.updateConfiguration(
+                config,
+                newBase.resources.displayMetrics
+            )
+
+            // Determine layout direction based on selected language
+            val layoutDirection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                if (TextUtils.getLayoutDirectionFromLocale(local) == View.LAYOUT_DIRECTION_RTL) {
+                    View.LAYOUT_DIRECTION_RTL
+                } else {
+                    View.LAYOUT_DIRECTION_LTR
+                }
+            } else {
+                View.LAYOUT_DIRECTION_LTR
+            }
+        }
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
+        if (layoutDirection!=null)
+            window.decorView.layoutDirection = layoutDirection!!
         binding = ActivityMyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -43,7 +87,7 @@ class MyActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_favourite, R.id.nav_slideshow, R.id.settingsFragment,R.id.mapsFragment
+                R.id.nav_home, R.id.nav_favourite, R.id.nav_alert, R.id.settingsFragment,R.id.mapsFragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -51,11 +95,6 @@ class MyActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.my, menu)
-        return true
-    }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_my)

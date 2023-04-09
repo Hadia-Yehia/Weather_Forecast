@@ -9,29 +9,13 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [InitialFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class InitialFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var selectedFruitsIndex: Int = 0
-    private val fruits = arrayOf("GPS","Map")
+
+    private var selectedMethodIndex: Int = 0
+    private val methods = arrayOf("GPS","Map")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -42,25 +26,6 @@ class InitialFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_initial, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment InitialFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            InitialFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,25 +33,25 @@ class InitialFragment : Fragment() {
     }
     fun showAlertDialog() {
 
-        var selectedFruits = fruits[selectedFruitsIndex]
+        var selectedMethods = methods[selectedMethodIndex]
         MaterialAlertDialogBuilder(requireActivity())
-            .setTitle("List of Fruits")
-            .setSingleChoiceItems(fruits, selectedFruitsIndex) { dialog_, which ->
-                selectedFruitsIndex = which
-                selectedFruits = fruits[which]
+            .setTitle("Location")
+            .setSingleChoiceItems(methods, selectedMethodIndex) { dialog_, which ->
+                selectedMethodIndex = which
+                selectedMethods = methods[which]
             }
             .setPositiveButton("Ok") { dialog, which ->
-                if (selectedFruits.equals("GPS")){
+                if (selectedMethods.equals("GPS")){
                     val action=InitialFragmentDirections.actionInitialFragmentToNavHome()
                     findNavController().navigate(action)
 
                 }
-                else if(selectedFruits.equals("Map")){
+                else if(selectedMethods.equals("Map")){
                     val action=InitialFragmentDirections.actionInitialFragmentToMapsFragment()
                     findNavController().navigate(action)
                 }
 
-                Toast.makeText(requireActivity(), "$selectedFruits Selected", Toast.LENGTH_SHORT)
+                Toast.makeText(requireActivity(), "$selectedMethods Selected", Toast.LENGTH_SHORT)
                     .show()
             }
             .setNegativeButton("Cancel") { dialog, which ->

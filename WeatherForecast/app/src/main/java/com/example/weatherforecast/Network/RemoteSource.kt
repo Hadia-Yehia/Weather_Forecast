@@ -2,6 +2,7 @@ package com.example.weatherforecast.Network
 
 import android.util.Log
 import com.example.weatherforecast.Model.Welcome
+import com.example.weatherforecast.MySharedPreference
 import retrofit2.Response
 
 class RemoteSource:RemoteSourceInterface {
@@ -20,7 +21,7 @@ class RemoteSource:RemoteSourceInterface {
         }
     }
     override suspend fun getAllWeatherData(lat:String,lon:String): Response<Welcome> {
-     val response=api.getWeatherData(lat,lon)
+     val response=api.getWeatherData(lat,lon,MySharedPreference.getLanguage(),MySharedPreference.getUnits())
 
         Log.i("TAG", "getAllWeatherData: "+ (response.body()?.current?.weather?.get(0)?.icon
             ?: "no data"))
