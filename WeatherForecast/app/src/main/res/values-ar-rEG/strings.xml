@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WeatherForecast</string>
+    <string name="menu_home">الصفحة الرئيسية</string>
+    <string name="menu_favourite">المفضلة</string>
+    <string name="menu_alert">الاشعارات</string>
+    <string name="menu_settings">الاعدادات</string>
+    <string name="menu_map">الخريطة</string>
+    <string name="favourite_details">عرض المفضلة</string>
+    <string name="alert_dialog">الاشعارات</string>
+    <string name="language">اللغة</string>
+    <string name="arabic">اللغة العربية</string>
+    <string name="English">اللغة الانجليزية</string>
+    <string name="Units">الوحدات</string>
+    <string name="kelvin">kelvin</string>
+    <string name="location">تحديد الموقع</string>
+    <string name="GPS">نظام تحديد الموقع</string>
+    <string name="map">الخريطة</string>
+    <string name="From">من</string>
+    <string name="To">إلى</string>
+    <string name="Time">الوقت</string>
+    <string name="Date">التاريخ</string>
+    <string name="save">حفظ</string>
+    <string name="Notification">إشعار</string>
+    <string name="Alarm">منبه</string>
+    <string name="cancel">إلغاء</string>
+</resources>

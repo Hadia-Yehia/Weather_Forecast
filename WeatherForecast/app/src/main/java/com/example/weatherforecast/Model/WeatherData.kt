@@ -10,8 +10,8 @@ import androidx.room.Entity
 
 @Entity(tableName = "fav_table", primaryKeys = ["lat","lon"])
 data class Welcome (
-    val lat: Double,
-    val lon: Double,
+    var lat: Double,
+    var lon: Double,
     val timezone: String,
     val timezoneOffset: Long,
     val current: Current,

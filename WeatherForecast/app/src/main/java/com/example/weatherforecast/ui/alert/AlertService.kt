@@ -15,6 +15,7 @@ import com.example.weatherforecast.MyActivity
 import com.example.weatherforecast.R
 
 class AlertService :Service(){
+     var desc:String=""
     private var notificationManager:NotificationManager?=null
     var alertWindowManager:AlertWindowManager?=null
 
@@ -26,7 +27,8 @@ class AlertService :Service(){
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return super.onStartCommand(intent, flags, startId)
 
-    //val description=intent?.getStringExtra("description")
+    desc= intent?.getStringExtra("description").toString()
+
 
 
 
@@ -39,10 +41,12 @@ class AlertService :Service(){
     override fun onCreate() {
         super.onCreate()
         notificationChannel()
-        startForeground(1,makeNotification("description"!!))
-//        if(Settings.canDrawOverlays(this)){
-//            alertWindowManager= AlertWindowManager(this,"description")
-//            alertWindowManager!!.intializeWindowManager()}
+        startForeground(1, makeNotification(desc))
+
+        if(Settings.canDrawOverlays(this)){
+            alertWindowManager= desc.let { AlertWindowManager(this, it) }
+            alertWindowManager!!.intializeWindowManager()}
+
     }
 
 
@@ -54,7 +58,7 @@ class AlertService :Service(){
             .setSmallIcon(R.drawable.alert)
             .setContentText(description)
             .setContentTitle("Weather Alert")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setStyle(
                 NotificationCompat.BigTextStyle()
                     .bigText(description)
