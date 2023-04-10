@@ -22,6 +22,7 @@ import com.example.weatherforecast.DataBase.LocalSource
 import com.example.weatherforecast.DataBase.RoomState
 import com.example.weatherforecast.InitialFragmentDirections
 import com.example.weatherforecast.Model.Repository
+import com.example.weatherforecast.Model.Welcome
 import com.example.weatherforecast.MyViewModel
 import com.example.weatherforecast.MyViewModelFactory
 import com.example.weatherforecast.Network.APIState
@@ -31,7 +32,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class FavouriteFragment : Fragment() {
+class FavouriteFragment : Fragment(),onFavDeleteClick {
     lateinit var favViewModelFactory: MyViewModelFactory
     lateinit var favViewModel: MyViewModel
     lateinit var favouriteAdapter: FavouriteAdapter
@@ -98,7 +99,7 @@ class FavouriteFragment : Fragment() {
             findNavController().navigate(action1)
 
         }
-        favouriteAdapter= FavouriteAdapter{
+        favouriteAdapter= FavouriteAdapter(this){
             if(isOnline()){
                 favViewModel.getFromApiForFav(it.lat.toString(),it.lon.toString())
             }
@@ -156,5 +157,9 @@ class FavouriteFragment : Fragment() {
         val cm = context?.getSystemService(AppCompatActivity.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = cm.activeNetworkInfo
         return if (activeNetwork != null) {true}else{false}}
+
+    override fun deleteFav(welcome: Welcome) {
+        favViewModel.deletePlaceFromRoom(welcome)
+    }
 }
 

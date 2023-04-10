@@ -4,6 +4,9 @@ import com.example.weatherforecast.DataBase.FakeLocalDataSource
 import com.example.weatherforecast.MainDispatcherRule
 import com.example.weatherforecast.Network.FakeRemoteDataSource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runBlockingTest
+import org.hamcrest.Matchers.`is`
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -97,28 +100,105 @@ class RepositoryTest {
         repo= Repository(
             fakeRemoteDataSource,
             fakeLocalDataSource,
-            Dispatchers.Main
+
         )
 
     }
-    @After
-    fun tearDown(){
+    @Test
+    fun getAllWeatherData() =mainDispatcherRule.runBlockingTest{
+        // Given
+        // When: request weather details from retrofit in repository
+        val results = repo.getAllWeatherData(
+            lat = "128.129", lon = "130.131"
+        ).first()
+        results.body().apply {
+            this?.lat= "128.129".toDouble()
+            this?.lon="130.131".toDouble()
+        }
 
+        // Then: response is a same of fake WeatherResponse
+        assertThat(results.body(),`is`(welcome3))
+    }
+
+
+
+    @Test
+    fun insert()=mainDispatcherRule.runBlockingTest {
+
+        // Given: item of favorite
+        val welcome4:Welcome= Welcome(
+            lat = 160.161, lon = 162.163, timezone = "detraxit", timezoneOffset = 6710, current = Current(
+                dt = 4388,
+                sunrise = null,
+                sunset = null,
+                temp = 164.165,
+                feelsLike = 166.167,
+                pressure = 7673,
+                humidity = 4323,
+                dew_point = 168.169,
+                uvi = 170.171,
+                clouds = 8842,
+                visibility = 3200,
+                wind_speed = 172.173,
+                wind_deg = 2249,
+                wind_gust = 174.175,
+                weather = listOf(),
+                pop = null
+            ), hourly = listOf(), daily = listOf(), alerts = listOf()
+        )
+
+        // When: insert favorite in room in repository
+        repo.insert(welcome4)
+        val results=repo.getAllStored().first()
+
+        // Then: size of favorite list will be 5
+        assertThat(results.size,`is`(3))
     }
 
     @Test
-    fun getAllWeatherData() {
+    fun getAllStored() =mainDispatcherRule.runBlockingTest{
+        // Given
+        // When: request all  favorite list in room in repository
+        val resutls = repo.getAllStored().first()
+
+        // Then: size of favorite list will be same size 4
+        assertThat(resutls.size,`is`(localFavs.size))
+        assertThat(resutls.size,`is`(2))
     }
 
     @Test
-    fun insert() {
-    }
+    fun delete()=mainDispatcherRule.runBlockingTest {
+        val welcome4:Welcome= Welcome(
+            lat = 160.161, lon = 162.163, timezone = "detraxit", timezoneOffset = 6710, current = Current(
+                dt = 4388,
+                sunrise = null,
+                sunset = null,
+                temp = 164.165,
+                feelsLike = 166.167,
+                pressure = 7673,
+                humidity = 4323,
+                dew_point = 168.169,
+                uvi = 170.171,
+                clouds = 8842,
+                visibility = 3200,
+                wind_speed = 172.173,
+                wind_deg = 2249,
+                wind_gust = 174.175,
+                weather = listOf(),
+                pop = null
+            ), hourly = listOf(), daily = listOf(), alerts = listOf()
+        )
 
-    @Test
-    fun getAllStored() {
-    }
+        // When: insert favorite in room in repository
+        repo.insert(welcome4)
+        val results=repo.getAllStored().first()
 
-    @Test
-    fun delete() {
+        // Then: size of favorite list will be 5
+        assertThat(results.size,`is`(3))
+        repo.delete(welcome2)
+        val result=repo.getAllStored().first()
+        assertThat(result.size,`is`(2))
+
+
     }
 }

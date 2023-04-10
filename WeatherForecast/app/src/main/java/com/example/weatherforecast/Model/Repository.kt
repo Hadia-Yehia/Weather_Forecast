@@ -6,24 +6,30 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 
-class Repository private constructor(var remoteSourceInterface: RemoteSourceInterface,var localSourceInterface: LocalSourceInterface):RepositoryInterface {
+class Repository constructor(
+    var remoteSourceInterface: RemoteSourceInterface,
+    var localSourceInterface: LocalSourceInterface
 
-    companion object{
-        private var instance:Repository?=null
+) : RepositoryInterface {
+
+    companion object {
+        private var instance: Repository? = null
         fun getInstance(
             remoteSourceInterface: RemoteSourceInterface,
             localSourceInterface: LocalSourceInterface
-        ):RepositoryInterface{
-            return instance?: synchronized(this){
-                val temp =Repository(
-                    remoteSourceInterface,localSourceInterface)
-                instance=temp
+        ): RepositoryInterface {
+            return instance ?: synchronized(this) {
+                val temp = Repository(
+                    remoteSourceInterface, localSourceInterface
+                )
+                instance = temp
                 temp
             }
         }
     }
-    override fun getAllWeatherData(lat:String,lon:String): Flow<Response<Welcome>> {
-        return flow { emit(remoteSourceInterface.getAllWeatherData(lat,lon)) }
+
+    override fun getAllWeatherData(lat: String, lon: String): Flow<Response<Welcome>> {
+        return flow { emit(remoteSourceInterface.getAllWeatherData(lat, lon)) }
     }
 
     override suspend fun insert(welcome: Welcome) {
@@ -38,12 +44,12 @@ class Repository private constructor(var remoteSourceInterface: RemoteSourceInte
         localSourceInterface.delete(welcome)
     }
 
-    override suspend fun insertAlert(alertModel: AlertModel):Long {
-       return localSourceInterface.insertAlert(alertModel)
+    override suspend fun insertAlert(alertModel: AlertModel): Long {
+        return localSourceInterface.insertAlert(alertModel)
     }
 
     override fun getAllStoredAlerts(): Flow<List<AlertModel>> {
-       return localSourceInterface.getAllStoredAlerts()
+        return localSourceInterface.getAllStoredAlerts()
     }
 
     override suspend fun deleteAlert(alertModel: AlertModel) {
@@ -51,7 +57,7 @@ class Repository private constructor(var remoteSourceInterface: RemoteSourceInte
     }
 
     override fun getAlert(id: Int): AlertModel {
-       return localSourceInterface.getAlert(id)
+        return localSourceInterface.getAlert(id)
     }
 
     override suspend fun deleteHome() {

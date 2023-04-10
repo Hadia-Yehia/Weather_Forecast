@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -37,6 +38,7 @@ import com.example.weatherforecast.MyViewModelFactory
 import com.example.weatherforecast.Network.APIState
 import com.example.weatherforecast.Network.RemoteSource
 import com.example.weatherforecast.databinding.FragmentHomeBinding
+import com.example.weatherforecast.ui.favourite.FavouriteFragmentDirections
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
@@ -117,17 +119,15 @@ class HomeFragment : Fragment() {
                             if (it.data.body() != null) {
 //                                welcome = it.data.body()!!
                                 binding.homeCountryTxt.text = it.data.body()!!.timezone
-                                if(MySharedPreference.getUnits().equals("metric")){
+                                if (MySharedPreference.getUnits().equals("metric")) {
                                     binding.homeTempTxt.text =
                                         Math.ceil(it.data.body()!!.current.temp).toInt()
                                             .toString() + "°C"
-                                }
-                                else if(MySharedPreference.getUnits().equals("imperial")){
+                                } else if (MySharedPreference.getUnits().equals("imperial")) {
                                     binding.homeTempTxt.text =
                                         Math.ceil(it.data.body()!!.current.temp).toInt()
                                             .toString() + "°F"
-                                }
-                                else{
+                                } else {
                                     binding.homeTempTxt.text =
                                         Math.ceil(it.data.body()!!.current.temp).toInt()
                                             .toString() + "°K"
@@ -166,7 +166,7 @@ class HomeFragment : Fragment() {
                                 binding.cloudsTxt.text = it.data.body()!!.current.clouds.toString()
 //                                it.data.body()!!.flag = false
 //                                Log.i("tag", "elmoshkela" + it.data.body()!!.flag)
-                             //   homeViewModel.deleteHome()
+                                //   homeViewModel.deleteHome()
                                 //  homeViewModel.insertPlaceInRoom(it.data.body()!!)
                                 var homeModel: HomeModel = HomeModel(
                                     it.data.body()!!
@@ -248,7 +248,7 @@ class HomeFragment : Fragment() {
 
                                 // it.data.flag = false
                                 //Log.i("tag", "elmoshkela" + it.data.flag)
-                               // homeViewModel.deleteHome()
+                                // homeViewModel.deleteHome()
                                 homeViewModel.insertHome(it.data)
 
 
@@ -342,7 +342,8 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (isOnline()) {
+
+        if (isOnline())
             if (args.map) {
                 homeViewModel.getDataFromApi(args.lat, args.lon)
             } else {
@@ -350,7 +351,7 @@ class HomeFragment : Fragment() {
                     LocationServices.getFusedLocationProviderClient(requireActivity())
                 getLastLocation()
             }
-        } else {
+        else {
             homeViewModel.getHome()
         }
 

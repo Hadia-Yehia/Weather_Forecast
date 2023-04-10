@@ -19,7 +19,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
             android:fontFamily="@font/inknut_antiqua_semibold"
-            android:text="Time"
+            android:text="@string/Time"
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:fontFamily="@font/inknut_antiqua_semibold"
-            android:text="Date"
+            android:text="@string/Date"
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -124,7 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="90dp"
             android:fontFamily="@font/inknut_antiqua_semibold"
-            android:text="From"
+            android:text="@string/From"
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -135,7 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="70dp"
             android:fontFamily="@font/inknut_antiqua_semibold"
-            android:text="To"
+            android:text="@string/To"
             android:textSize="17sp"
             app:layout_constraintStart_toEndOf="@+id/unit_txt"
             app:layout_constraintTop_toTopOf="parent" />

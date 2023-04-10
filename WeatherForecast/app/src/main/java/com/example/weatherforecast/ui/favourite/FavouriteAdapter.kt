@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class FavouriteAdapter(private val onClick:(Welcome)->Unit ):ListAdapter<Welcome,FavouriteAdapter.FavouriteViewHolder>(HourDiffUtil()) {
+class FavouriteAdapter(val delete:onFavDeleteClick,private val onClick:(Welcome)->Unit ):ListAdapter<Welcome,FavouriteAdapter.FavouriteViewHolder>(HourDiffUtil()) {
     lateinit var context: Context
     lateinit var binding: FavItemBinding
 
@@ -40,15 +40,16 @@ class FavouriteAdapter(private val onClick:(Welcome)->Unit ):ListAdapter<Welcome
         val currentObj = getItem(position)
         var time: String = getCurrentTime(currentObj.current.dt.toInt())
         holder.binding.favCountryTxt.text = currentObj.timezone
-        holder.binding.favDescTxt.text = currentObj.current.weather.get(0).description
-        holder.binding.favTimeTxt.text = time
-        holder.binding.favTempTxt.text =
-            Math.ceil(currentObj.current.temp).toInt().toString() + "°C"
-        holder.binding.favHighTxt.text =
-            Math.ceil(currentObj.daily.get(0).temp.max).toInt().toString() + "°C"
-        holder.binding.favLowTxt.text =
-            Math.ceil(currentObj.daily.get(0).temp.min).toInt().toString() + "°C"
+//        holder.binding.favDescTxt.text = currentObj.current.weather.get(0).description
+//        holder.binding.favTimeTxt.text = time
+//        holder.binding.favTempTxt.text =
+//            Math.ceil(currentObj.current.temp).toInt().toString() + "°C"
+//        holder.binding.favHighTxt.text =
+//            Math.ceil(currentObj.daily.get(0).temp.max).toInt().toString() + "°C"
+//        holder.binding.favLowTxt.text =
+//            Math.ceil(currentObj.daily.get(0).temp.min).toInt().toString() + "°C"
         holder.binding.favLayout.setOnClickListener { onClick(currentObj) }
+        holder.binding.favDelete.setOnClickListener { delete.deleteFav(currentObj) }
     }
 }
 

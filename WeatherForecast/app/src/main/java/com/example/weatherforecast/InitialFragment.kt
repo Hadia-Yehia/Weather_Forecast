@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class InitialFragment : Fragment() {
+class InitialFragment : DialogFragment() {
 
     private var selectedMethodIndex: Int = 0
     private val methods = arrayOf("GPS","Map")

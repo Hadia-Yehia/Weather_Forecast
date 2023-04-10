@@ -30,7 +30,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/inknut_antiqua_semibold"
-                android:text="Language"
+                android:text="@string/language"
                 android:textColor="#063354"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -54,14 +54,14 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Arabic" />
+                    android:text="@string/arabic" />
 
                 <RadioButton
                     android:id="@+id/english"
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="English" />
+                    android:text="@string/English" />
 
             </RadioGroup>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -90,7 +90,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/inknut_antiqua_semibold"
-                android:text="Location"
+                android:text="@string/location"
                 android:textColor="#063354"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -115,14 +115,14 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="GPS" />
+                    android:text="@string/GPS" />
 
                 <RadioButton
                     android:id="@+id/maps"
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Map" />
+                    android:text="@string/map" />
 
             </RadioGroup>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -151,7 +151,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/inknut_antiqua_semibold"
-                android:text="Units"
+                android:text="@string/Units"
                 android:textColor="#063354"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -174,7 +174,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="kelvin" />
+                    android:text="@string/kelvin" />
 
                 <RadioButton
                     android:id="@+id/celsius"
